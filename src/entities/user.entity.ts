@@ -44,8 +44,9 @@ class User {
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
-    const pass = getRounds(this.password);
-    if (!pass) {
+    const isEncrypted: number = getRounds(this.password);
+
+    if (!isEncrypted) {
       this.password = hashSync(this.password, 10);
     }
   }

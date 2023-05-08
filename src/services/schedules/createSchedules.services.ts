@@ -38,7 +38,7 @@ const createSchedulesService = async (
   }
 
   if (scheduleData.hour < "07:00" || scheduleData.hour > "18:00") {
-    throw new AppError("Invalid hour, available times are 7AM to 18PM");
+    throw new AppError("Invalid hour, available times are 8AM to 18PM");
   }
 
   const newDate = new Date(scheduleData.date);
