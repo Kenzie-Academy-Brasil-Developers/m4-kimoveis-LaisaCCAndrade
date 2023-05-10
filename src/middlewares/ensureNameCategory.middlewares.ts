@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { TRepositoryCategory } from "../interfaces/categories.interfaces";
 import { AppDataSource } from "../data-source";
 import { Category } from "../entities";
@@ -8,7 +8,7 @@ const ensureNameCategoryMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const categoryRepository: TRepositoryCategory = AppDataSource.getRepository(Category);
   const category = await categoryRepository.findOne({
     where: {

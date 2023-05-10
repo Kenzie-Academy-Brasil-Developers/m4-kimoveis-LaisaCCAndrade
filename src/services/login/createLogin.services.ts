@@ -1,4 +1,4 @@
-import { compare } from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import { AppDataSource } from "../../data-source";
 import { User } from "../../entities";
 import { AppError } from "../../error";
@@ -13,11 +13,11 @@ const createLoginService = async (loginData: TLogin): Promise<string> => {
     email: loginData.email,
   });
 
-  if (!user) {
+  if (!user || user.deletedAt) {
     throw new AppError("Invalid credentials", 401);
   }
 
-  const password: boolean = await compare(loginData.password, user.password);
+  const password = await bcrypt.compare(loginData.password, user.password);
 
   if (!password) {
     throw new AppError("Invalid credentials", 401);
@@ -27,7 +27,11 @@ const createLoginService = async (loginData: TLogin): Promise<string> => {
     {
       admin: user.admin,
     },
-    String(process.env.SECRET_KEY)
+    String(process.env.SECRET_KEY),
+    {
+      subject: user.id.toString(),
+      expiresIn: process.env.EXPIRES_IN || "24h",
+    }
   );
 
   return token;

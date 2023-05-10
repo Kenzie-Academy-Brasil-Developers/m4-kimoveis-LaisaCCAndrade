@@ -5,8 +5,8 @@ import { allSchema } from "../../schemas/users.schemas";
 
 const listUsersService = async (): Promise<TAll> => {
   const userRepository: TRepository = AppDataSource.getRepository(User);
-  const users: User[] = await userRepository.find({ withDeleted: true });
 
+  const users = await userRepository.find();
   const returnUser = allSchema.parse(users);
 
   return returnUser;

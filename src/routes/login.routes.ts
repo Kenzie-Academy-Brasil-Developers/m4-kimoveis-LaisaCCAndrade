@@ -5,10 +5,6 @@ import createLoginController from "../controllers/login.controllers";
 
 const loginRoutes: Router = Router();
 
-loginRoutes.post(
-  "",
-  ensureDataIsValidMiddleware(loginSchema),
-  createLoginController
-);
+loginRoutes.post("", createLoginController);
 
 export default loginRoutes;

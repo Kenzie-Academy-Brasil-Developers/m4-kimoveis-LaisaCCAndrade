@@ -40,7 +40,8 @@ const deleteUsersController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const deleted = await deleteUsersService(parseInt(req.params.id));
+  const userId = parseInt(req.params.id);
+  await deleteUsersService(userId);
 
   return res.status(204).send();
 };

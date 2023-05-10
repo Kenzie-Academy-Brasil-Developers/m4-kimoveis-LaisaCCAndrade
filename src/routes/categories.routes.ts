@@ -3,13 +3,13 @@ import ensureTokenIsValidMiddleware from "../middlewares/ensureTokenIsValid.midd
 import ensureAdminExistsMiddleware from "../middlewares/ensureAdminExists.middlewares";
 import ensureNameCategoryMiddleware from "../middlewares/ensureNameCategory.middlewares";
 import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middlewares";
+import ensureCategoryExistsMiddleware from "../middlewares/ensureCategoryExists.middlewares";
 import { createSchemaCategory } from "../schemas/categories.schemas";
 import {
   createCategoryController,
   listCategoryController,
   retrieveCategoryController,
 } from "../controllers/categories.controllers";
-import ensureCategoryExistsMiddleware from "../middlewares/ensureCategoryExists.middlewares";
 
 const categoriesRoutes: Router = Router();
 
@@ -25,7 +25,7 @@ categoriesRoutes.post(
 categoriesRoutes.get("", listCategoryController);
 
 categoriesRoutes.get(
-  ":id/realEstate",
+  "/:id/realEstate",
   ensureCategoryExistsMiddleware,
   retrieveCategoryController
 );

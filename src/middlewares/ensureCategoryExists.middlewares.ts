@@ -10,6 +10,7 @@ const ensureCategoryExistsMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   const categoryRepository: TRepositoryCategory = AppDataSource.getRepository(Category);
+
   const category = await categoryRepository.findOne({
     where: {
       id: parseInt(req.params.id),
@@ -19,7 +20,7 @@ const ensureCategoryExistsMiddleware = async (
   if (!category) {
     throw new AppError("Category not found", 404);
   }
-
+  
   return next();
 };
 

@@ -27,8 +27,9 @@ const retrieveCategoryController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const category: number = parseInt(req.params.id);
-  const estateIsTheCategory = await retrieveCategoriesService(category);
+  const categoryId = parseInt(req.params.id);   
+
+  const estateIsTheCategory = await retrieveCategoriesService(categoryId);
 
   return res.json(estateIsTheCategory);
 };

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { AppError } from "../error";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
@@ -19,10 +19,11 @@ const ensureTokenIsValidMiddleware = async (
     if (err) {
       throw new AppError(err.message, 401);
     }
-    req.user = {
-      id: parseInt(decoded.id),
+    res.locals.user = {
+      id: parseInt(decoded.sub),
       admin: decoded.admin,
     };
+
     return next();
   });
 };

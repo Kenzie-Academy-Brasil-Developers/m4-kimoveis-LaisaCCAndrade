@@ -15,6 +15,7 @@ const createEstateService = async (
 ): Promise<TReturnEstate> => {
   const addressRepository: TRepositoryAddress =
     AppDataSource.getRepository(Address);
+
   const address: Address = addressRepository.create(estateData.address);
   const addressFind = await addressRepository.findOneBy({
     street: String(address.street),
@@ -28,6 +29,7 @@ const createEstateService = async (
   await addressRepository.save(address);
   const categoryRepository: TRepositoryCategory =
     AppDataSource.getRepository(Category);
+
   const categoryFind = await categoryRepository.findOneBy({
     id: Number(estateData.categoryId),
   });
@@ -37,6 +39,7 @@ const createEstateService = async (
   }
   const estateRepository: TRepositoryEstate =
     AppDataSource.getRepository(RealEstate);
+    
   const estate = estateRepository.create({
     ...estateData,
     address,

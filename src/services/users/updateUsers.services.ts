@@ -9,10 +9,13 @@ import { returnSchema } from "../../schemas/users.schemas";
 
 const updateUsersService = async (
   userData: TUpdate,
-  id: number
+  userId: number
 ): Promise<TReturn> => {
   const userRepository: TRepository = AppDataSource.getRepository(User);
-  const users: User | null = await userRepository.findOneBy({ id: id });
+
+  const users = await userRepository.findOne({
+    where: { id: userId },
+  });
   const updateUser = userRepository.create({
     ...users,
     ...userData,

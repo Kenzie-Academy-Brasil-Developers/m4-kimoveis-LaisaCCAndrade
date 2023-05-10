@@ -1,23 +1,18 @@
 import { AppDataSource } from "../../data-source";
 import { RealEstate } from "../../entities";
-import {
-  TAllEstate,
-  TRepositoryEstate,
-} from "../../interfaces/estate.interfaces";
-import { allSchemaEstate } from "../../schemas/estate.schemas";
+import { TRepositoryEstate } from "../../interfaces/estate.interfaces";
 
-const listEstateService = async (): Promise<TAllEstate> => {
+const listEstateService = async (): Promise<RealEstate[]> => {
   const estateRepository: TRepositoryEstate =
     AppDataSource.getRepository(RealEstate);
-  const estateFind: RealEstate[] = await estateRepository.find({
+
+  const estateFind = await estateRepository.find({
     relations: {
       address: true,
-      category: true,
     },
   });
-  const estate = allSchemaEstate.parse(estateFind);
 
-  return estate;
+  return estateFind;
 };
 
 export default listEstateService;

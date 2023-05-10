@@ -7,6 +7,7 @@ import {
   retrieveSchedulesController,
 } from "../controllers/schedules.controllers";
 import ensureAdminExistsMiddleware from "../middlewares/ensureAdminExists.middlewares";
+import ensureValidatedSchudelesMiddleware from "../middlewares/ensureValidatedSchedules.middlewares";
 
 const schedulesRoutes: Router = Router();
 
@@ -14,6 +15,7 @@ schedulesRoutes.post(
   "",
   ensureTokenIsValidMiddleware,
   ensureDataIsValidMiddleware(createSchemaSchedule),
+  ensureValidatedSchudelesMiddleware,
   createSchedulesController
 );
 

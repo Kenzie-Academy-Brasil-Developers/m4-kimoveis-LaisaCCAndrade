@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Repository } from "typeorm";
 import { User } from "../entities";
 import { AppDataSource } from "../data-source";
@@ -10,9 +10,10 @@ const ensureUserExistsMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  const idUser =  parseInt(req.params.id)
   const user = await userRepository.findOne({
     where: {
-      id: parseInt(req.params.id),
+      id: idUser,
     },
   });
 

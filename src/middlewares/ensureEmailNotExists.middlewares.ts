@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { AppDataSource } from "../data-source";
 import { AppError } from "../error";
 import { TRepository } from "../interfaces/users.interfaces";

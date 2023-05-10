@@ -9,6 +9,7 @@ const createUsersService = async (
   userData: TCreate
 ): Promise<TReturn> => {
   const userRepository: TRepository = AppDataSource.getRepository(User);
+  
   const user: User = userRepository.create(userData);
   await userRepository.save(user);
 

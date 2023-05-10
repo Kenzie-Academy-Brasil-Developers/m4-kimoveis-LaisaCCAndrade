@@ -11,6 +11,7 @@ const retrieveSchedulesService = async (
 ): Promise<TReturnEstate> => {
   const estateRepository: TRepositoryEstate =
     AppDataSource.getRepository(RealEstate);
+    
   const estateFind: RealEstate | null = await estateRepository.findOne({
     where: {
       id: realEstate,

@@ -14,69 +14,40 @@ const createSchedulesService = async (
 ): Promise<object> => {
   const scheduleRepository: TRepositorySchedule =
     AppDataSource.getRepository(Schedule);
+
   const userRepository: TRepository = AppDataSource.getRepository(User);
+
   const estateRepository: TRepositoryEstate =
     AppDataSource.getRepository(RealEstate);
-  const schedule = await scheduleRepository
-    .createQueryBuilder("schedule")
-    .where("schedule.realEstateId = :realEstateId", {
-      realEstateId: scheduleData.realEstateId,
-    })
-    .andWhere("schedule.date = :date", {
-      date: scheduleData.date,
-    })
-    .andWhere("schedule.hour = :hour", {
-      hour: scheduleData.hour,
-    })
-    .getOne();
 
-  if (schedule) {
-    throw new AppError(
-      "Schedule to this real estate at this date and time already exists",
-      409
-    );
-  }
-
-  if (scheduleData.hour < "07:00" || scheduleData.hour > "18:00") {
-    throw new AppError("Invalid hour, available times are 8AM to 18PM");
-  }
-
-  const newDate = new Date(scheduleData.date);
-  const week = newDate.getDate();
-
-  if (week === 0 || week === 6) {
-    throw new AppError("Invalid date, work days are monday to friday", 400);
-  }
-  const estateFind: RealEstate | null = await estateRepository.findOneBy({
-    id: scheduleData.realEstateId,
+  const user: User | null = await userRepository.findOneBy({
+    id: Number(userId),
   });
 
-  if (!estateFind) {
-    throw new AppError("RealEstate not found", 404);
+  if (!user) {
+    throw new AppError("User not found", 404);
   }
 
-  const scheduleFind = await scheduleRepository.findOneBy({
-    date: scheduleData.date,
-    hour: scheduleData.hour,
-  });
+  let estate: RealEstate | null;
 
-  if (scheduleFind) {
-    throw new AppError(
-      "User schedule to this real estate at this date and time already exists",
-      409
-    );
+  if (scheduleData.realEstateId) {
+    estate = await estateRepository.findOneBy({
+      id: Number(scheduleData.realEstateId),
+    });
+
+    if (!estate) {
+      throw new AppError("RealEstate not found", 404);
+    }
   }
-  const userFind: User | null = await userRepository.findOneBy({
-    id: userId,
-  });
+
   const newSchedule: Schedule = scheduleRepository.create({
     ...scheduleData,
-    realEstate: estateFind,
-    user: userFind!,
+    realEstate: estate!,
+    user: user!,
   });
   await scheduleRepository.save(newSchedule);
 
-  return newSchedule;
+  return { message: "Schedule created" };
 };
 
 export default createSchedulesService;
